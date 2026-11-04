@@ -1,0 +1,18 @@
+# Clean URLs for iCinema (Apache). XAMPP reads this file because its htdocs folder has
+# "AllowOverride All" and mod_rewrite is enabled by default.
+
+# Do not list the contents of a folder (for example /assets/) when someone requests it.
+Options -Indexes
+
+# Turn Apache's rewrite feature on for this folder.
+RewriteEngine On
+
+# If the request names a real file (CSS, JavaScript, an image) or a real folder, serve it as it is.
+# %{REQUEST_FILENAME} is the full filesystem path Apache calculated for the request.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Every other path (/movies, /movies/3, /admin/dashboard ...) is handled by the single PHP entry
+# point. The address in the browser does not change; the rewrite happens inside Apache.
+RewriteRule ^ index.php [L]

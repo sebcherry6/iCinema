@@ -1,0 +1,3 @@
+# Private application folder: never served directly by Apache (Apache 2.4+).
+# Every request must go through public/index.php.
+Require all denied

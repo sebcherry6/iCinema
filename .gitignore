@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+
+# README files are notes for the developer, not part of the repository.
+# (The [Rr][Ee]... pattern matches README, readme, Readme... in any letter case, in any folder.)
+**/[Rr][Ee][Aa][Dd][Mm][Ee]
+**/[Rr][Ee][Aa][Dd][Mm][Ee].*

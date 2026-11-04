@@ -1,0 +1,500 @@
+/* ==========================================================
+   iCinema stylesheet (follows the User Interface Design Guide)
+
+   PRIMARY    night     #013025   navigation, banners, footer, headings
+              emerald   #117d56   buttons, links, the current booking step
+              deep teal #01465f   selected seats, completed steps, hover on emerald
+   SECONDARY  pale lime #cce58f   soft backgrounds, text on dark surfaces
+              mint      #f3f8e8   page background          white #ffffff  cards, fields
+   ACCENT     lime      #a1cd3f   Book Tickets button, thin accent rules
+              amber     #f59e0b   keyboard focus outline
+   STATUS     few seats #b86e00   error #b02a37          TEXT muted #4a6358
+
+   Contrast (WCAG, 4.5:1 is the minimum for body text): night on mint 13.4,
+   pale lime on night 10.5, white on deep teal 10.3, night on lime 7.8,
+   muted on mint 6.0, white on emerald 5.1, emerald on mint 4.7.
+
+   Design rules used throughout: flat colour (no gradients or glow shadows), a 1 px border
+   instead of a drop shadow, one small corner radius for controls (6 px) and one for panels (8 px),
+   left-aligned headings, and no motion except a colour change on hover.
+   ========================================================== */
+
+:root {
+    /* ----- palette ----- */
+    --ic-night:   #013025;
+    --ic-primary: #117d56;   /* emerald */
+    --ic-deep:    #01465f;   /* deep teal */
+    --ic-soft:    #cce58f;   /* pale lime */
+    --ic-page:    #f3f8e8;   /* mint */
+    --ic-accent:  #a1cd3f;   /* lime */
+    --ic-focus:   #f59e0b;   /* amber */
+    --ic-text:    #013025;
+    --ic-muted:   #4a6358;
+    --ic-line:    #d3e0bd;   /* hairlines and card borders */
+    --ic-error:   #b02a37;
+    --ic-few:     #b86e00;
+
+    /* ----- shape ----- */
+    --ic-radius:    6px;     /* buttons, fields, chips, badges */
+    --ic-radius-lg: 8px;     /* cards and panels */
+
+    /* ----- seat states: the seats AND the legend under the seat map both read these ----- */
+    --seat-available-bg:     #ffffff;
+    --seat-available-border: #117d56;
+    --seat-available-text:   #117d56;
+    --seat-selected-bg:      #01465f;
+    --seat-selected-text:    #ffffff;
+    --seat-wheelchair-bg:    #eaf3d2;
+    --seat-wheelchair-border:#a1cd3f;
+    --seat-wheelchair-text:  #01465f;
+    --seat-taken-bg:         #c9d4cd;
+    --seat-taken-text:       #4a6358;
+
+    /* ----- Bootstrap variables pointed at the palette ----- */
+    --bs-dark-rgb: 1, 48, 37;
+    --bs-light-rgb: 243, 248, 232;
+    --bs-primary: #117d56;
+    --bs-primary-rgb: 17, 125, 86;
+    --bs-success: #117d56;
+    --bs-success-rgb: 17, 125, 86;
+    --bs-info-rgb: 161, 205, 63;
+    --bs-body-color: #013025;
+    --bs-body-bg: #f3f8e8;
+    --bs-link-color: #117d56;
+    --bs-link-color-rgb: 17, 125, 86;
+    --bs-link-hover-color: #01465f;
+    --bs-link-hover-color-rgb: 1, 70, 95;
+    --bs-border-color: #d3e0bd;
+    --bs-border-radius: 6px;
+    --bs-border-radius-sm: 4px;
+    --bs-border-radius-lg: 8px;
+    --bs-border-radius-xl: 8px;
+    --bs-border-radius-xxl: 8px;
+    --bs-border-radius-pill: 6px;     /* "pill" buttons become ordinary 6 px buttons */
+}
+
+/* ---------- Base ---------- */
+html { scroll-behavior: smooth; }
+::selection { background: var(--ic-accent); color: var(--ic-night); }
+
+body {
+    background-color: var(--ic-page);
+    color: var(--ic-text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1rem; font-weight: 400; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+a { color: var(--ic-primary); }
+a:hover { color: var(--ic-deep); }
+
+/* Type scale (design guide): headings Poppins 600-700 at 40/32/28/24/20/16 px, body 16 px, secondary 14 px. */
+h1, h2, h3, h4, h5, h6, .navbar-brand, .display-4, .display-5, .display-6 {
+    font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: 0;
+}
+h1, .h1 { font-size: 2.5rem;  font-weight: 700; }
+h2, .h2 { font-size: 2rem;    font-weight: 700; }
+h3, .h3 { font-size: 1.75rem; font-weight: 600; }
+h4, .h4 { font-size: 1.5rem;  font-weight: 600; }
+h5, .h5 { font-size: 1.25rem; font-weight: 600; }
+h6, .h6 { font-size: 1rem;    font-weight: 600; }
+.small, small { font-size: .875rem; }
+.text-muted { color: var(--ic-muted) !important; }
+.form-label { font-weight: 600; color: var(--ic-night); }
+.form-text { color: var(--ic-muted); }
+
+/* ---------- Flat surfaces: Bootstrap's shadows and round shapes are switched off ---------- */
+.shadow-sm, .shadow { box-shadow: none !important; }
+.rounded-circle { border-radius: var(--ic-radius) !important; }   /* numbered badges become small squares */
+.bg-light { background-color: #f3f8e8 !important; }
+.bg-dark { background-color: var(--ic-night) !important; background-image: none; }
+.bg-dark .text-muted, .bg-dark .text-secondary, .text-white-50, .footer-link { color: #d7eacb !important; }
+.bg-dark .text-info { color: var(--ic-accent) !important; }
+.footer-link:hover { color: #ffffff !important; text-decoration: underline !important; }
+.border-primary { border-color: var(--ic-primary) !important; }
+.border-info { border-color: var(--ic-accent) !important; }
+.text-success { color: var(--ic-primary) !important; }
+
+/* Page banners (the dark bar under the header on inner pages): flat, left-aligned */
+header.bg-dark { border-bottom: 1px solid rgba(204, 229, 143, .18); }
+
+/* Legacy Bootstrap navbar (the admin top bar) */
+.navbar-dark .navbar-nav .nav-link { color: var(--ic-soft); }
+.navbar-dark .navbar-nav .nav-link:hover { color: #ffffff; }
+.navbar-dark .navbar-nav .nav-link.active { color: #ffffff; box-shadow: inset 0 -2px 0 var(--ic-accent); }
+.brand-icon { color: var(--ic-accent); }
+
+.dropdown-menu { border-color: var(--ic-line); border-radius: var(--ic-radius); }
+.dropdown-item { color: var(--ic-text); }
+.dropdown-item:hover, .dropdown-item:focus { background: var(--ic-soft); color: var(--ic-night); }
+
+/* ---------- Cards: white, 1 px border, no shadow ---------- */
+.card {
+    background-color: #ffffff; color: var(--ic-text);
+    border: 1px solid var(--ic-line); border-radius: var(--ic-radius-lg); box-shadow: none;
+}
+.card.border-0:not([class*="border-start"]) { border: 1px solid var(--ic-line) !important; }
+.card[class*="border-start"] { border-top: 1px solid var(--ic-line) !important; border-right: 1px solid var(--ic-line) !important; border-bottom: 1px solid var(--ic-line) !important; }
+.card .text-dark { color: var(--ic-night) !important; }
+
+.movie-card { overflow: hidden; transition: border-color .15s ease; }
+.movie-card img { height: 350px; object-fit: cover; }
+.movie-card:hover { border-color: var(--ic-primary); }       /* colour change only: no lift, no zoom */
+.poster-wrap { position: relative; overflow: hidden; }
+.poster-badge { position: absolute; top: .6rem; left: .6rem; font-size: .75rem; }
+.mini-poster { border-radius: var(--ic-radius); overflow: hidden; border: 1px solid var(--ic-line); }
+.mini-poster img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; }
+
+/* ---------- Buttons: 44 px minimum height, 6 px corners, colour change on hover ---------- */
+.btn {
+    border-radius: var(--ic-radius); font-weight: 600;
+    min-height: 44px; padding-top: .65rem; padding-bottom: .65rem;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+.btn-sm { padding-top: .72rem; padding-bottom: .72rem; }
+.btn-primary {
+    --bs-btn-bg: #117d56; --bs-btn-border-color: #117d56; --bs-btn-color: #ffffff;
+    --bs-btn-hover-bg: #01465f; --bs-btn-hover-border-color: #01465f; --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-bg: #013025; --bs-btn-active-border-color: #013025; --bs-btn-active-color: #ffffff;
+    --bs-btn-disabled-bg: #117d56; --bs-btn-disabled-border-color: #117d56;
+}
+.btn-outline-primary {
+    --bs-btn-color: #117d56; --bs-btn-border-color: #117d56;
+    --bs-btn-hover-bg: #117d56; --bs-btn-hover-border-color: #117d56; --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-bg: #01465f; --bs-btn-active-border-color: #01465f; --bs-btn-active-color: #ffffff;
+}
+.btn-outline-secondary {
+    --bs-btn-color: #4a6358; --bs-btn-border-color: #4a6358;
+    --bs-btn-hover-bg: #4a6358; --bs-btn-hover-border-color: #4a6358; --bs-btn-hover-color: #ffffff;
+}
+.btn-outline-light { --bs-btn-color: #cce58f; --bs-btn-border-color: #cce58f; --bs-btn-hover-bg: #cce58f; --bs-btn-hover-color: #013025; }
+.btn-outline-danger { --bs-btn-color: #b02a37; --bs-btn-border-color: #b02a37; }
+.btn-dark { --bs-btn-bg: #013025; --bs-btn-border-color: #013025; --bs-btn-hover-bg: #01465f; --bs-btn-hover-border-color: #01465f; }
+.btn-light { --bs-btn-bg: #ffffff; --bs-btn-border-color: #ffffff; --bs-btn-color: #013025; --bs-btn-hover-bg: #cce58f; --bs-btn-hover-border-color: #cce58f; --bs-btn-hover-color: #013025; }
+
+/* ---------- Badges: small squared tags ---------- */
+.badge { font-weight: 600; font-size: .75rem; letter-spacing: .02em; padding: .4em .65em; border-radius: 4px; }
+.badge.bg-secondary { background-color: #4a6358 !important; color: #ffffff; }
+.badge.bg-primary, .badge.bg-success { background-color: #117d56 !important; color: #ffffff; }
+
+/* ---------- Forms: white fields, 1 px green-grey border, 4 px emerald focus ring + amber outline ---------- */
+.form-control, .form-select {
+    background-color: #ffffff; color: var(--ic-text);
+    border: 1px solid #738f7a; border-radius: var(--ic-radius); padding: .65rem .9rem;
+}
+.form-control::placeholder { color: #5f776a; }
+.form-control:focus, .form-select:focus {
+    background-color: #ffffff; color: var(--ic-text);
+    border-color: var(--ic-primary); box-shadow: 0 0 0 4px rgba(17, 125, 86, .18);
+}
+
+/* ---------- Tables (admin) ---------- */
+.table { --bs-table-color: #013025; --bs-table-hover-bg: #f3f8e8; --bs-table-border-color: #d3e0bd; }
+.table thead { background: rgba(204, 229, 143, .4); }
+.table th { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ic-muted); }
+
+/* ---------- Seat map ----------
+   One set of colours (the --seat-* variables in :root) is used by the seats AND by the legend
+   under the map, so what a legend swatch shows is exactly what the seat looks like. */
+.seat-btn {
+    width: 44px; height: 44px; min-height: 0; padding: 0; font-size: .85rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; border-radius: var(--ic-radius);
+}
+/* Available */
+.seat-btn.btn-outline-primary { background: var(--seat-available-bg); border-color: var(--seat-available-border); color: var(--seat-available-text); }
+.seat-btn.btn-outline-primary:hover { background: var(--seat-wheelchair-bg); color: var(--seat-available-text); }
+/* Wheelchair space */
+.seat-btn.btn-outline-info { background: var(--seat-wheelchair-bg); border-color: var(--seat-wheelchair-border); color: var(--seat-wheelchair-text); }
+.seat-btn.btn-outline-info:hover { background: var(--seat-wheelchair-border); color: var(--ic-night); }
+/* Selected (the hidden checkbox before the label is checked): applies to ordinary and wheelchair seats */
+.btn-check:checked + .seat-btn {
+    background: var(--seat-selected-bg) !important; border-color: var(--seat-selected-bg) !important; color: var(--seat-selected-text) !important;
+}
+/* Taken: not clickable, so it is a flat grey with muted text (no transparency tricks) */
+.seat-btn.btn-secondary.opacity-50 { opacity: 1 !important; background: var(--seat-taken-bg); border-color: var(--seat-taken-bg); color: var(--seat-taken-text); }
+
+.seat-aisle { width: 22px; flex-shrink: 0; }
+@media (max-width: 420px) {
+    .seat-row { gap: .25rem !important; }
+    .seat-btn { width: 38px; height: 38px; font-size: .75rem; }
+}
+.screen-curve {
+    width: 100%; max-width: 460px; margin: 0 auto 1.75rem; text-align: center; padding-top: 12px; height: 40px;
+    border-top: 4px solid var(--ic-accent); border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    color: var(--ic-muted); font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; font-weight: 700;
+}
+.summary-bar { position: sticky; bottom: 0; z-index: 20; background: #ffffff; border-top: 2px solid var(--ic-primary); }
+
+/* Legend under the seat map: each swatch is a small copy of the real seat */
+.seat-key {
+    display: inline-block; width: 1.3rem; height: 1.3rem; border: 1px solid; border-radius: 4px;
+    vertical-align: -.35em; margin-right: .45rem;
+}
+.seat-key-available  { background: var(--seat-available-bg);  border-color: var(--seat-available-border); }
+.seat-key-selected   { background: var(--seat-selected-bg);   border-color: var(--seat-selected-bg); }
+.seat-key-wheelchair { background: var(--seat-wheelchair-bg); border-color: var(--seat-wheelchair-border); }
+.seat-key-taken      { background: var(--seat-taken-bg);      border-color: var(--seat-taken-bg); }
+
+/* ---------- Accessibility ---------- */
+.skip-link {
+    position: absolute; left: .5rem; top: -4rem; z-index: 2000;
+    background: #ffffff; color: #013025; padding: .6rem 1rem;
+    border-radius: var(--ic-radius); font-weight: 700; text-decoration: none;
+}
+.skip-link:focus { top: .5rem; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, .btn-check:focus-visible + .btn {
+    outline: 3px solid var(--ic-focus) !important; outline-offset: 2px; box-shadow: none !important;
+}
+main:focus { outline: none; }
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ---------- Showtime chips ---------- */
+.film-head-poster { width: 84px; height: 120px; object-fit: cover; border-radius: var(--ic-radius); border: 1px solid rgba(204, 229, 143, .35); }
+.time-chip-off  { background: #e9efe0; color: #4f6358; border: 1px solid #c3d1b8; text-decoration: line-through; pointer-events: none; }
+.time-chip-sold { background: #fdecee; color: #9c2330; border: 1px solid #f1b9bf; pointer-events: none; }
+.time-chip-off small, .time-chip-sold small { text-decoration: none; display: block; }
+.time-chip-low  { border-color: var(--ic-few) !important; color: #7a4a00 !important; background: #fff6e5; }
+.time-chip-low:hover { background: var(--ic-few) !important; color: #ffffff !important; }
+.fact-chip {
+    display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .7rem; border-radius: 4px; font-size: .85rem; font-weight: 600;
+    border: 1px solid rgba(204, 229, 143, .4); color: var(--ic-soft);
+}
+.trailer-placeholder { background: var(--ic-night); color: var(--ic-soft); border-radius: var(--ic-radius-lg); }
+
+/* A short lime rule under a section title; thin and square, not a decoration bar */
+.section-title::after { content: ""; display: block; width: 40px; height: 2px; margin-top: .6rem; background: var(--ic-accent); }
+.text-center > .section-title::after, .section-title.text-center::after { margin-inline: auto; }
+
+/* ---------- Ticket (booking confirmation) ---------- */
+.ticket { display: grid; grid-template-columns: 1fr 250px; background: #ffffff; border: 1px solid var(--ic-line); border-radius: var(--ic-radius-lg); position: relative; overflow: hidden; }
+.ticket-main { padding: 2rem 2.25rem; }
+.ticket-stub { padding: 2rem 1.5rem; border-left: 2px dashed var(--ic-line); background: var(--ic-page); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.ticket::before, .ticket::after {
+    content: ""; position: absolute; width: 26px; height: 26px; border-radius: 50%; background: var(--ic-page);
+    border: 1px solid var(--ic-line); left: calc(100% - 250px - 14px);
+}
+.ticket::before { top: -14px; } .ticket::after { bottom: -14px; }
+.ticket-band { background: var(--ic-night); color: #ffffff; padding: .75rem 2.25rem; letter-spacing: .12em; font-size: .8rem; text-transform: uppercase; font-weight: 700; grid-column: 1 / -1; }
+.ticket-label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ic-muted); font-weight: 700; margin-bottom: .15rem; }
+@media (max-width: 767px) {
+    .ticket { grid-template-columns: 1fr; }
+    .ticket-stub { border-left: 0; border-top: 2px dashed var(--ic-line); }
+    .ticket::before, .ticket::after { display: none; }
+}
+
+/* ---------- Account / bookings / admin ---------- */
+.booking-thumb { width: 56px; height: 80px; object-fit: cover; border-radius: 4px; }
+.pill-tabs .btn { border-radius: var(--ic-radius); }
+.admin-subnav .nav-link { color: var(--ic-muted); font-weight: 600; padding: .9rem 1rem; white-space: nowrap; border-bottom: 3px solid transparent; }
+.admin-subnav .nav-link:hover { color: var(--ic-primary); }
+.admin-subnav .nav-link.active { color: var(--ic-primary); border-bottom-color: var(--ic-primary); }
+.admin-subnav + main { padding-top: 1.75rem; }
+.stat-icon { width: 44px; height: 44px; border-radius: var(--ic-radius); display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+
+/* ---------- Footer ---------- */
+.site-footer .footer-text { color: #d7eacb; }
+.site-footer .footer-heading { color: var(--ic-accent); letter-spacing: .1em; }
+.site-footer .bi { color: var(--ic-accent); margin-right: .35rem; }
+
+/* ---------- Booking progress (partials/booking-steps.php) ---------- */
+.steps { border: 1px solid var(--ic-line); border-radius: var(--ic-radius-lg); background: #ffffff; }
+.booking-steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; justify-content: space-between; }
+.booking-step { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; font-size: .9rem; font-weight: 600; color: var(--ic-muted); }
+.booking-step a { display: flex; align-items: center; gap: 8px; min-height: 44px; color: var(--ic-primary); text-decoration: none; }
+.booking-step a:hover .booking-step-label { text-decoration: underline; }
+.step-marker { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ic-primary); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; background: #ffffff; color: var(--ic-night); }
+.booking-step.is-current { color: var(--ic-night); }
+.booking-step.is-current .step-marker { background: var(--ic-primary); border-color: var(--ic-primary); color: #ffffff; }
+.booking-step.is-done .step-marker { background: var(--ic-deep); border-color: var(--ic-deep); color: #ffffff; }
+@media (max-width: 575px) {
+    .booking-step-label { display: none; }
+    .booking-step.is-current .booking-step-label { display: inline; }
+    .booking-step { flex: 0 1 auto; }
+}
+
+/* ---------- Programme tabs and pagination (Movies page) ---------- */
+.nav-pills { --bs-nav-pills-link-active-bg: var(--ic-primary); --bs-nav-pills-link-active-color: #ffffff; --bs-nav-pills-border-radius: var(--ic-radius); }
+.nav-pills .nav-link { color: var(--ic-primary); font-weight: 600; border: 1px solid var(--ic-line); background: #ffffff; }
+.nav-pills .nav-link:hover { color: var(--ic-deep); border-color: var(--ic-primary); }
+.nav-pills .nav-link.active { border-color: var(--ic-primary); }
+.pagination {
+    --bs-pagination-color: var(--ic-primary); --bs-pagination-hover-color: var(--ic-deep); --bs-pagination-hover-bg: var(--ic-soft);
+    --bs-pagination-focus-color: var(--ic-deep); --bs-pagination-focus-bg: var(--ic-soft);
+    --bs-pagination-active-bg: var(--ic-primary); --bs-pagination-active-border-color: var(--ic-primary); --bs-pagination-active-color: #ffffff;
+    --bs-pagination-border-color: var(--ic-line);
+}
+
+/* ==========================================================
+   Header: logo in the middle, cinema picker left, account right; links and search on a second row.
+   ========================================================== */
+.site-header { background: var(--ic-night); color: #ffffff; border-bottom: 1px solid rgba(204, 229, 143, .22); }
+@media (min-width: 992px) { .site-header { position: sticky; top: 0; z-index: 1030; } }   /* sticky on large screens only */
+
+.header-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; padding: .85rem 0; }
+.header-left { justify-self: start; display: flex; align-items: center; min-width: 0; }
+.header-right { justify-self: end; }
+.site-logo {
+    font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-weight: 700; font-size: 1.8rem; letter-spacing: 0; line-height: 1; color: #ffffff; text-decoration: none;
+}
+.site-logo:hover { color: #ffffff; }
+.logo-i { color: var(--ic-accent); }
+
+.header-btn {
+    display: inline-flex; align-items: center; gap: .45rem; max-width: 100%; min-height: 44px;
+    background: transparent; color: #ffffff; border: 1px solid rgba(204, 229, 143, .4); border-radius: var(--ic-radius);
+    padding: .5rem .8rem; font-size: .9rem; font-weight: 500;
+}
+.header-btn:hover, .header-btn:focus-visible, .header-btn.show { background: rgba(204, 229, 143, .12); color: #ffffff; border-color: var(--ic-soft); }
+.header-btn.is-current { border-color: var(--ic-accent); }
+.header-btn .bi { color: var(--ic-accent); font-size: 1.05rem; }
+.header-btn-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 13rem; }
+.header-menu-btn { padding: .4rem .6rem; font-size: 1.35rem; }
+
+.site-header .dropdown-menu { --bs-dropdown-link-active-bg: var(--ic-primary); --bs-dropdown-link-active-color: #ffffff; margin-top: .4rem; min-width: 14rem; }
+.site-header .dropdown-header { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ic-muted); }
+
+.header-bottom.navbar { padding: .4rem 0 .85rem; gap: .6rem 1rem; align-items: center; flex-wrap: wrap; border-top: 1px solid rgba(204, 229, 143, .16); }
+.header-picker-phone { flex: 0 1 auto; min-width: 0; max-width: 48%; }
+.header-search { display: flex; flex: 1 1 0; min-width: 0; order: 2; }
+.header-search-input {
+    flex: 1; width: 100%; min-width: 0; min-height: 44px; border: 0; border-radius: var(--ic-radius) 0 0 var(--ic-radius);
+    padding: .5rem .75rem; background: #ffffff; color: var(--ic-night); font-size: .9rem;
+}
+.header-search-input::placeholder { color: #5f776a; }
+.header-search-btn { min-height: 44px; border: 0; background: var(--ic-accent); color: var(--ic-night); border-radius: 0 var(--ic-radius) var(--ic-radius) 0; padding: 0 .9rem; }
+.header-search-btn:hover { background: var(--ic-soft); }
+
+.header-nav { order: 3; flex-basis: 100%; }
+.header-nav .nav-link {
+    color: var(--ic-soft); text-transform: uppercase; letter-spacing: .09em; font-size: .78rem; font-weight: 600;
+    padding: .55rem .9rem; border-bottom: 2px solid transparent; border-radius: 0; box-shadow: none;
+}
+.header-nav .nav-link:hover { color: #ffffff; }
+.header-nav .nav-link.active { color: #ffffff; border-bottom-color: var(--ic-accent); box-shadow: none; }
+.btn-book {
+    display: inline-block; min-height: 44px; background: var(--ic-accent); color: var(--ic-night); font-weight: 700; font-size: .8rem;
+    letter-spacing: .08em; text-transform: uppercase; padding: .8rem 1.1rem; border-radius: var(--ic-radius); text-decoration: none;
+}
+.btn-book:hover { background: var(--ic-soft); color: var(--ic-night); }
+
+@media (min-width: 992px) {
+    .header-nav { order: 1; flex-basis: auto; flex-grow: 1; }
+    .header-nav .navbar-nav { align-items: center; gap: .15rem; }
+    .header-search { order: 2; flex: 0 1 20rem; }
+    .header-book { margin-left: .75rem; }
+}
+@media (max-width: 991.98px) {
+    .header-nav .nav-link { padding: .75rem 0; border-bottom: 1px solid rgba(204, 229, 143, .14); }
+    .header-book { margin: .75rem 0 .25rem; }
+    .site-logo { font-size: 1.6rem; }
+}
+
+/* ==========================================================
+   Home hero and information strip
+   ========================================================== */
+.hero { position: relative; color: #ffffff; padding: 5.5rem 0 5rem; background: url('../img/herobg.png') center / cover no-repeat; }
+.hero::before { content: ""; position: absolute; inset: 0; background: rgba(1, 48, 37, .82); }
+.hero > .container { position: relative; }
+.hero-kicker { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; font-weight: 600; color: var(--ic-accent); margin-bottom: 1rem; }
+.hero-title {
+    color: #ffffff; font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-weight: 700; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.08; letter-spacing: -.01em; margin: 0 0 1rem;
+}
+.hero-lead { color: #e6efd9; max-width: 34rem; font-size: 1.15rem; margin-bottom: 2rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+.info-strip { background: #ffffff; border-bottom: 1px solid var(--ic-line); margin-bottom: 2.5rem; }
+.info-strip ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); }
+.info-strip li { display: flex; align-items: center; gap: .8rem; padding: 1rem 1.1rem; border-top: 1px solid var(--ic-line); font-size: .9rem; }
+.info-strip li:nth-child(-n+2) { border-top: 0; }
+.info-strip li:nth-child(odd) { padding-left: 0; }
+.info-strip .bi { color: var(--ic-primary); font-size: 1.3rem; }
+.info-strip strong { display: block; color: var(--ic-night); }
+.info-strip small { color: var(--ic-muted); }
+@media (min-width: 992px) {
+    .info-strip ul { grid-template-columns: repeat(4, 1fr); }
+    .info-strip li { border-top: 0; border-left: 1px solid var(--ic-line); }
+    .info-strip li:nth-child(odd) { padding-left: 1.1rem; }
+    .info-strip li:first-child { border-left: 0; padding-left: 0; }
+}
+
+/* ==========================================================
+   Alerts: an icon (drawn in CSS, in the text colour) and text. Success and error messages
+   use role="status" / role="alert" in the markup so screen readers announce them.
+   ========================================================== */
+.alert { position: relative; padding-left: 3rem; border-radius: var(--ic-radius); border-left-width: 4px; }
+.alert::before {
+    content: ""; position: absolute; left: 1rem; top: 1.05rem; width: 1.15rem; height: 1.15rem; background-color: currentColor;
+    -webkit-mask: var(--alert-icon) no-repeat center / contain; mask: var(--alert-icon) no-repeat center / contain;
+}
+.alert-light { padding-left: 1rem; }
+.alert-light::before { display: none; }
+.alert, .alert-info { --alert-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Cpath%20fill-rule='evenodd'%20d='M8%200a8%208%200%201%200%200%2016A8%208%200%200%200%208%200Zm-.9%203.8h1.8v1.8H7.1V3.8Zm0%203.2h1.8v5.2H7.1V7Z'/%3E%3C/svg%3E"); }
+.alert-success { --alert-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Cpath%20fill-rule='evenodd'%20d='M8%200a8%208%200%201%200%200%2016A8%208%200%200%200%208%200Zm3.6%205.2%201%201L7%2012.2%203.4%208.6l1-1L7%2010.2l4.6-5Z'/%3E%3C/svg%3E"); }
+.alert-warning { --alert-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Cpath%20fill-rule='evenodd'%20d='M8%201%20.5%2014.5h15L8%201Zm-.9%204.5h1.8v4.6H7.1V5.5Zm0%205.8h1.8v1.8H7.1v-1.8Z'/%3E%3C/svg%3E"); }
+.alert-danger { --alert-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Cpath%20fill-rule='evenodd'%20d='M8%200a8%208%200%201%200%200%2016A8%208%200%200%200%208%200ZM4.2%203%208%206.8%2011.8%203%2013%204.2%209.2%208%2013%2011.8%2011.8%2013%208%209.2%204.2%2013%203%2011.8%206.8%208%203%204.2Z'/%3E%3C/svg%3E"); }
+.alert-info, .alert-success { --bs-alert-color: #013025; --bs-alert-bg: #eaf3d2; --bs-alert-border-color: #a1cd3f; --bs-alert-link-color: #01465f; }
+.alert-light { --bs-alert-bg: #ffffff; --bs-alert-border-color: var(--ic-line); --bs-alert-color: var(--ic-night); }
+
+/* ---------- Cinema context strip (Movies, film page, showtimes) ---------- */
+.cinema-context {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem;
+    background: #ffffff; border: 1px solid var(--ic-line); border-left: 4px solid var(--ic-accent);
+    border-radius: var(--ic-radius); padding: .7rem 1rem; margin-bottom: 1.5rem; font-size: .92rem; color: var(--ic-night);
+}
+.cinema-context .bi { color: var(--ic-primary); }
+.cinema-context a { margin-left: auto; font-weight: 600; }
+
+
+/* ==========================================================
+   Home page: quick-booking bar, section headings, compact film cards, cinema cards
+   ========================================================== */
+/* Quick booking: a white panel in the hero. Labels are always visible (not placeholders). */
+.quick-book {
+    display: grid; grid-template-columns: 1fr; gap: .85rem; max-width: 62rem;
+    background: #ffffff; color: var(--ic-night); border-radius: var(--ic-radius-lg); padding: 1.1rem;
+}
+@media (min-width: 768px) { .quick-book { grid-template-columns: 1fr 1.35fr .8fr auto; align-items: end; } }
+.quick-field label {
+    display: block; margin-bottom: .3rem; font-size: .75rem; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--ic-muted);
+}
+.quick-submit { white-space: nowrap; }
+/* The lime accent button (night text on lime is 7.8:1) */
+.btn-accent { background: var(--ic-accent); border-color: var(--ic-accent); color: var(--ic-night); font-weight: 700; }
+.btn-accent:hover, .btn-accent:focus-visible { background: var(--ic-soft); border-color: var(--ic-soft); color: var(--ic-night); }
+
+/* Section heading with its "view all" link on the right */
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1.25rem; }
+.section-head .section-title { margin: 0; font-size: 1.75rem; }
+.section-link { font-weight: 600; text-decoration: none; white-space: nowrap; }
+.section-link:hover { text-decoration: underline; }
+
+/* Compact film card: portrait poster, less padding, buttons stack on a narrow phone */
+.card-title-link { color: inherit; text-decoration: none; }
+.card-title-link:hover { color: var(--ic-primary); }
+.movie-card-compact img { height: auto; aspect-ratio: 3 / 4; }
+.movie-card-compact .card-body { padding: .85rem; }
+.movie-card-compact .card-title { font-size: 1.05rem; }
+@media (max-width: 575.98px) { .movie-card-compact .card-actions { flex-direction: column; } }
+/* "Coming soon" label on the poster of a film that cannot be booked yet */
+.poster-status {
+    position: absolute; top: .6rem; right: .6rem; background: var(--ic-accent); color: var(--ic-night);
+    font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: .3em .55em; border-radius: 4px;
+}
+
+/* "Choose your cinema" cards: the chosen one gets an emerald outline */
+.cinema-choice img { height: 150px; object-fit: cover; }
+.cinema-choice.is-chosen { border-color: var(--ic-primary); box-shadow: inset 0 0 0 1px var(--ic-primary); }
+
+/* Buttons that are shown but cannot be used. They stay fully readable (flat tinted label, no
+   transparency) because the text says why: "Coming soon" or "Your cinema". */
+.btn-soon, .btn-chosen { opacity: 1; pointer-events: none; cursor: default; }
+.btn-soon   { background: #e9efe0; border: 1px solid #c3d1b8; color: var(--ic-muted); }
+.btn-chosen { background: #eaf3d2; border: 1px solid var(--ic-accent); color: var(--ic-deep); }

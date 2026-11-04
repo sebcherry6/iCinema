@@ -1,0 +1,2 @@
+# Private folder: the SQL setup script must never be downloadable from the browser (Apache 2.4+).
+Require all denied
